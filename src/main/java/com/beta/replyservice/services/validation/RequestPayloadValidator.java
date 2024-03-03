@@ -1,5 +1,6 @@
 package com.beta.replyservice.services.validation;
 
+import com.beta.replyservice.configuration.MessageConfiguration;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -7,7 +8,7 @@ import org.springframework.stereotype.Service;
 public class RequestPayloadValidator implements Validator {
 
     @Autowired
-    private String ruleMessageSeparator;
+    private MessageConfiguration config;
 
     @Override
     public boolean isValidInput(String input) {
@@ -15,7 +16,7 @@ public class RequestPayloadValidator implements Validator {
             return false;
         }
 
-        int ruleMessageSeparatorIndex = input.indexOf(ruleMessageSeparator);
+        int ruleMessageSeparatorIndex = input.indexOf(config.getSeparator());
 
         if (ruleMessageSeparatorIndex == -1) {
             return false;
