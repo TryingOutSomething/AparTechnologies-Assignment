@@ -35,7 +35,7 @@ public class RequestPayloadValidator implements Validator {
             char currentChar = input.charAt(i);
             int rule = currentChar - CHAR_DIGIT_OFFSET;
 
-            if (isNumeric(currentChar) && isValidRuleRange(rule)) {
+            if (isNumeric(rule) && isValidRuleRange(rule)) {
                 continue;
             }
 
