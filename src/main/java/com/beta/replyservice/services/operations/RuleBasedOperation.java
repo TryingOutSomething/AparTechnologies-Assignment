@@ -10,6 +10,8 @@ import java.util.Map;
 public class RuleBasedOperation implements IRuleBasedOperation {
 
     private static final Map<Integer, Operation<String>> ruleOperationsMap;
+    private static final int REVERSE_STRING_KEY = 1;
+    private static final int HASH_STRING_KEY = 2;
 
     static {
         final Map<Integer, Operation<String>> map = new HashMap<>();
@@ -20,15 +22,38 @@ public class RuleBasedOperation implements IRuleBasedOperation {
     }
 
     private static void populateRules(Map<Integer, Operation<String>> map) {
-        map.put(1, new ReverseStringOperation());
-        map.put(2, new MD5HashedStringOperation());
+        map.put(REVERSE_STRING_KEY, new ReverseStringOperation());
+        map.put(HASH_STRING_KEY, new MD5HashedStringOperation());
     }
 
-    public String processRuleBasedOperation(int rule, String message) {
-        if (!ruleOperationsMap.containsKey(rule)) {
-            throw new RuntimeException("Invalid rule!");
+    public String processRuleBasedOperation(String rules, String message) {
+        char DIGIT_OFFSET_CHAR = '0';
+        String processedMessage = message;
+
+        int consecutiveRuleOneFrequency = 0;
+
+        for (int i = 0; i < rules.length(); i++) {
+            int currentRule = rules.charAt(i) - DIGIT_OFFSET_CHAR;
+
+            if (currentRule == 1) {
+                consecutiveRuleOneFrequency++;
+                continue;
+            }
+
+            // Reversing a string twice negates the reversal process.
+            // If we encounter an odd number of repeating rule one operation, we require only one string reversal operation
+            if (consecutiveRuleOneFrequency % 2 == 1) {
+                processedMessage = ruleOperationsMap.get(REVERSE_STRING_KEY).execute(processedMessage);
+                consecutiveRuleOneFrequency = 0;
+            }
+
+            processedMessage = ruleOperationsMap.get(HASH_STRING_KEY).execute(processedMessage);
         }
 
-        return ruleOperationsMap.get(rule).execute(message);
+        if (consecutiveRuleOneFrequency % 2 == 1) {
+            processedMessage = ruleOperationsMap.get(REVERSE_STRING_KEY).execute(processedMessage);
+        }
+
+        return processedMessage;
     }
 }
