@@ -1,15 +1,17 @@
 package com.beta.replyservice.services.parsers;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
 public class MessageParser implements Parser<String, String> {
 
-    private static final String SEPARATOR = "-"; //TODO: put in prop file
+    @Autowired
+    private String ruleMessageSeparator;
 
     @Override
     public String getValue(String input) {
-        int separatorIndex = input.indexOf(SEPARATOR);
+        int separatorIndex = input.indexOf(ruleMessageSeparator);
 
         return input.substring(separatorIndex + 1);
     }

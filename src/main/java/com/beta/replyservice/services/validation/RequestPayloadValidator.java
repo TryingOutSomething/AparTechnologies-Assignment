@@ -1,15 +1,17 @@
 package com.beta.replyservice.services.validation;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
 public class RequestPayloadValidator implements Validator {
 
-    private static final String SEPARATOR = "-"; //TODO: put in prop file
+    @Autowired
+    private String ruleMessageSeparator;
 
     @Override
     public boolean isValidInput(String input) {
-        return input.contains(SEPARATOR) && isNumeric(input);
+        return input.contains(ruleMessageSeparator) && isNumeric(input);
     }
 
     private boolean isNumeric(String input) {

@@ -7,7 +7,7 @@ import java.security.NoSuchAlgorithmException;
 
 class MD5HashedStringOperation implements Operation<String> {
 
-    private static final String ALGO = "MD5"; // TODO: put in property file?
+    private static final String ALGO = "MD5";
 
     @Override
     public String execute(String value) {
