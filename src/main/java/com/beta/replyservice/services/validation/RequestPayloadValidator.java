@@ -29,9 +29,15 @@ public class RequestPayloadValidator implements Validator {
     }
 
     private boolean isValidRule(String input) {
+        int inputLength = input.length();
+
+        if (inputLength == 0) {
+            return false;
+        }
+
         char CHAR_DIGIT_OFFSET = '0';
 
-        for (int i = 0; i < input.length(); i++) {
+        for (int i = 0; i < inputLength; i++) {
             char currentChar = input.charAt(i);
             int rule = currentChar - CHAR_DIGIT_OFFSET;
 
