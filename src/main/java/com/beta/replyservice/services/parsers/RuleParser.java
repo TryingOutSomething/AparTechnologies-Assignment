@@ -1,18 +1,22 @@
 package com.beta.replyservice.services.parsers;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
-@Service
-public class RuleParser implements Parser<Integer, String> {
+@Component("RuleParser")
+class RuleParser implements Parser<String, String> {
 
     @Autowired
     private String ruleMessageSeparator;
 
     @Override
-    public Integer getValue(String input) {
+    public String getValue(String input) {
         int separatorIndex = input.indexOf(ruleMessageSeparator);
 
-        return Integer.parseInt(input.substring(0, separatorIndex));
+        if (separatorIndex == -1) {
+            return input;
+        }
+
+        return input.substring(0, separatorIndex);
     }
 }
