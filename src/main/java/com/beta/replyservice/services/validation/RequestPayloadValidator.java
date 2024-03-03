@@ -11,14 +11,29 @@ public class RequestPayloadValidator implements Validator {
 
     @Override
     public boolean isValidInput(String input) {
-        return input.contains(ruleMessageSeparator) && isNumeric(input);
+        if (input == null) {
+            return false;
+        }
+
+        int ruleMessageSeparatorIndex = input.indexOf(ruleMessageSeparator);
+
+        if (ruleMessageSeparatorIndex == -1) {
+            return false;
+        }
+
+        return isNumeric(input.substring(0, ruleMessageSeparatorIndex))
+                && hasMessage(input, ruleMessageSeparatorIndex);
     }
 
     private boolean isNumeric(String input) {
+        int CHAR_DIGIT_ONE_ASCII_VALUE = 49;
+        int CHAR_DIGIT_NINE_ASCII_VALUE = 57;
+
         for (int i = 0; i < input.length(); i++) {
             char c = input.charAt(i);
 
-            if (c >= 1 && c <=9) {
+            if (c >= CHAR_DIGIT_ONE_ASCII_VALUE
+                    && c <= CHAR_DIGIT_NINE_ASCII_VALUE) {
                 continue;
             }
 
@@ -26,5 +41,9 @@ public class RequestPayloadValidator implements Validator {
         }
 
         return true;
+    }
+
+    private boolean hasMessage(String input, int separatorIndex) {
+        return separatorIndex < input.length() - 1;
     }
 }
