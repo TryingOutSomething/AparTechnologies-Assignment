@@ -5,13 +5,16 @@ import com.beta.replyservice.services.parsers.Parser;
 import com.beta.replyservice.services.validation.Validator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController("ReplyControllerV2")
 @RequestMapping("v2/")
-public class ReplyControllerV2 extends ReplyController {
+public class ReplyControllerV2 {
 
     @Autowired
     private Validator validator;
@@ -24,26 +27,27 @@ public class ReplyControllerV2 extends ReplyController {
     @Autowired
     private IRuleBasedOperation ruleBasedOperation;
 
-    @Override
-    // base path: /reply
-    public ReplyMessage replying() {
-        return new ReplyMessage("test");
+    @GetMapping("/reply")
+    public ResponseEntity<ReplyMessage> replying() {
+        return new ResponseEntity<>(new ReplyMessage("Message is empty"), HttpStatus.NOT_FOUND);
     }
 
-    @Override
-    // base path: /reply/{message}
-    public ReplyMessage replying(@PathVariable String message) {
+    @GetMapping("/reply/{message}")
+    public ResponseEntity<ReplyMessage> replying(@PathVariable String message) {
         String reply;
+        HttpStatus status;
 
         if (!validator.isValidInput(message)) {
             reply = "Invalid input";
+            status = HttpStatus.NOT_FOUND;
         } else {
             String rules = ruleParser.getValue(message);
             String userMessage = messageParser.getValue(message);
 
             reply = ruleBasedOperation.processRuleBasedOperation(rules, userMessage);
+            status = HttpStatus.OK;
         }
 
-        return new ReplyMessage(reply);
+        return new ResponseEntity<>(new ReplyMessage(reply), status);
     }
 }
