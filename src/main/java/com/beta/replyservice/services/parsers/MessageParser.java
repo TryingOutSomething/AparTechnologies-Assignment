@@ -1,10 +1,10 @@
 package com.beta.replyservice.services.parsers;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
-@Service
-public class MessageParser implements Parser<String, String> {
+@Component("MessageParser")
+class MessageParser implements Parser<String, String> {
 
     @Autowired
     private String ruleMessageSeparator;
@@ -13,6 +13,11 @@ public class MessageParser implements Parser<String, String> {
     public String getValue(String input) {
         int separatorIndex = input.indexOf(ruleMessageSeparator);
 
+        if (separatorIndex == input.length() - 1 || separatorIndex == -1) {
+            return "";
+        }
+
         return input.substring(separatorIndex + 1);
     }
 }
+
