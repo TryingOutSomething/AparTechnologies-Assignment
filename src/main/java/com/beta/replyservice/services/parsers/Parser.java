@@ -1,4 +1,4 @@
-package com.beta.replyservice.services;
+package com.beta.replyservice.services.parsers;
 
 public interface Parser<L, R> {
 
