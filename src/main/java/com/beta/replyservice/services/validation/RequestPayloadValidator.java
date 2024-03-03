@@ -22,19 +22,20 @@ public class RequestPayloadValidator implements Validator {
             return false;
         }
 
-        return isNumeric(input.substring(0, ruleMessageSeparatorIndex))
+        String rules = input.substring(0, ruleMessageSeparatorIndex);
+
+        return isValidRule(rules)
                 && hasMessage(input, ruleMessageSeparatorIndex);
     }
 
-    private boolean isNumeric(String input) {
-        int CHAR_DIGIT_ONE_ASCII_VALUE = 49;
-        int CHAR_DIGIT_NINE_ASCII_VALUE = 57;
+    private boolean isValidRule(String input) {
+        char CHAR_DIGIT_OFFSET = '0';
 
         for (int i = 0; i < input.length(); i++) {
-            char c = input.charAt(i);
+            char currentChar = input.charAt(i);
+            int rule = currentChar - CHAR_DIGIT_OFFSET;
 
-            if (c >= CHAR_DIGIT_ONE_ASCII_VALUE
-                    && c <= CHAR_DIGIT_NINE_ASCII_VALUE) {
+            if (isNumeric(currentChar) && isValidRuleRange(rule)) {
                 continue;
             }
 
@@ -42,6 +43,16 @@ public class RequestPayloadValidator implements Validator {
         }
 
         return true;
+    }
+
+    private boolean isNumeric(int rule) {
+        return rule >= 1 && rule <= 9;
+    }
+
+    private boolean isValidRuleRange(int rule) {
+        int[] ruleRange = config.getRange();
+
+        return rule >= ruleRange[0] && rule <= ruleRange[1];
     }
 
     private boolean hasMessage(String input, int separatorIndex) {

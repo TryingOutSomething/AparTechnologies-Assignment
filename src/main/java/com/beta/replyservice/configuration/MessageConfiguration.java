@@ -10,7 +10,7 @@ import org.springframework.context.annotation.Configuration;
 public class MessageConfiguration {
 
     private String separator;
-    private String[] range;
+    private int[] range;
 
     public String getSeparator() {
         return separator;
@@ -20,11 +20,11 @@ public class MessageConfiguration {
         this.separator = separator;
     }
 
-    public String[] getRange() {
+    public int[] getRange() {
         return range;
     }
 
-    public void setRange(String[] range) {
+    public void setRange(int[] range) {
         this.range = range;
     }
 }

@@ -12,7 +12,7 @@ public class MessageConfigurationTest {
     @Value("${rule.separator}")
     private String messageSeparatorProperty;
     @Value("${rule.range}")
-    private String[] ruleAllowableRangeProperty;
+    private int[] ruleAllowableRangeProperty;
     @Autowired
     private MessageConfiguration config;
 
@@ -23,7 +23,7 @@ public class MessageConfigurationTest {
 
     @Test
     public void testGetValidRulesRangeProperty() {
-        String[] allowedRulesRange = config.getRange();
+        int[] allowedRulesRange = config.getRange();
 
         int arrayPropertyLength = ruleAllowableRangeProperty.length;
         int validRulesRangeLength = allowedRulesRange.length;
@@ -31,8 +31,8 @@ public class MessageConfigurationTest {
         Assertions.assertEquals(arrayPropertyLength, validRulesRangeLength);
 
         for (int i = 0; i < arrayPropertyLength; i++) {
-            String arrayProperty = ruleAllowableRangeProperty[i];
-            String validRule = allowedRulesRange[i];
+            int arrayProperty = ruleAllowableRangeProperty[i];
+            int validRule = allowedRulesRange[i];
 
             Assertions.assertEquals(arrayProperty, validRule);
         }
