@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component("MessageParser")
-class MessageParser implements Parser<String, String> {
+public class MessageParser implements Parser<String, String> {
 
     @Autowired
     private String ruleMessageSeparator;
@@ -20,4 +20,3 @@ class MessageParser implements Parser<String, String> {
         return input.substring(separatorIndex + 1);
     }
 }
-

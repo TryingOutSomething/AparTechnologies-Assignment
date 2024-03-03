@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component("RuleParser")
-class RuleParser implements Parser<String, String> {
+public class RuleParser implements Parser<String, String> {
 
     @Autowired
     private String ruleMessageSeparator;
