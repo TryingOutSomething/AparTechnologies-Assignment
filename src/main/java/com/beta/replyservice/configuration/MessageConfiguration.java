@@ -5,13 +5,19 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
+
 @Configuration
 @ConfigurationProperties(prefix = "rule")
 public class MessageConfiguration {
 
     private String separator;
     private int minLength;
-    private int[] range;
+    private Set<Integer> whitelist;
 
     public String getSeparator() {
         return separator;
@@ -29,11 +35,11 @@ public class MessageConfiguration {
         this.minLength = minLength;
     }
 
-    public int[] getRange() {
-        return range;
+    public Set<Integer> getWhitelist() {
+        return whitelist;
     }
 
-    public void setRange(int[] range) {
-        this.range = range;
+    public void setWhitelist(int[] whitelist) {
+        this.whitelist = Arrays.stream(whitelist).boxed().collect(Collectors.toSet());
     }
 }

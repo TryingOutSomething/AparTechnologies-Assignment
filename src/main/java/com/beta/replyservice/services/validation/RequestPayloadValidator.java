@@ -41,7 +41,7 @@ public class RequestPayloadValidator implements Validator {
             char currentChar = input.charAt(i);
             int rule = currentChar - CHAR_DIGIT_OFFSET;
 
-            if (isNumeric(rule) && isValidRuleRange(rule)) {
+            if (isNumeric(rule) && isValidRule(rule)) {
                 continue;
             }
 
@@ -55,10 +55,8 @@ public class RequestPayloadValidator implements Validator {
         return rule >= 1 && rule <= 9;
     }
 
-    private boolean isValidRuleRange(int rule) {
-        int[] ruleRange = config.getRange();
-
-        return rule >= ruleRange[0] && rule <= ruleRange[1];
+    private boolean isValidRule(int rule) {
+        return config.getWhitelist().contains(rule);
     }
 
     private boolean hasMessage(String input, int separatorIndex) {
