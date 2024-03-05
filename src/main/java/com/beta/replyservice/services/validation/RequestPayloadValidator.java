@@ -5,6 +5,9 @@ import com.beta.replyservice.configuration.RuleConfiguration;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+/**
+ * The main class to validate the user's input message
+ */
 @Service
 public class RequestPayloadValidator implements Validator {
 
@@ -14,6 +17,12 @@ public class RequestPayloadValidator implements Validator {
     @Autowired
     private RequestErrorMessage errorMessage;
 
+    /**
+     * Performs the validation check on the user's input
+     *
+     * @param input the user's input
+     * @return the result of the validation
+     */
     @Override
     public ValidationResult isValidInput(String input) {
         if (input == null) {
@@ -83,6 +92,13 @@ public class RequestPayloadValidator implements Validator {
         return separatorIndex < input.length() - 1;
     }
 
+    /**
+     * A helper function that generates the validation result object
+     *
+     * @param isValid        the validation result
+     * @param message        error message if any. Else null
+     * @param requiresPrefix prepends a default message referenced in application.properties file to the current message
+     */
     private ValidationResult generateResult(boolean isValid, String message, boolean requiresPrefix) {
         if (isValid) {
             return new ValidationResult(null, true);
@@ -91,6 +107,6 @@ public class RequestPayloadValidator implements Validator {
         String prefixMessage = requiresPrefix
                 ? errorMessage.getPrefix() + " " : "";
 
-        return  new ValidationResult(prefixMessage + message, false);
+        return new ValidationResult(prefixMessage + message, false);
     }
 }

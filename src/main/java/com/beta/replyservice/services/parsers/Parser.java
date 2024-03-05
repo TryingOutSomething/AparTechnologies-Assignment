@@ -1,6 +1,12 @@
 package com.beta.replyservice.services.parsers;
 
-public interface Parser<L, R> {
 
+/**
+ * The interface Parser.
+ *
+ * @param <L> the return type
+ * @param <R> the type parameter
+ */
+public interface Parser<L, R> {
     L getValue(R value);
 }

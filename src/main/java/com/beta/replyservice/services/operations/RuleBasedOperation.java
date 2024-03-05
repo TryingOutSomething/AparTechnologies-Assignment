@@ -13,6 +13,7 @@ public class RuleBasedOperation implements IRuleBasedOperation {
     private static final int REVERSE_STRING_KEY = 1;
     private static final int HASH_STRING_KEY = 2;
 
+    // The command pattern is used here to map rules to their operations
     static {
         final Map<Integer, Operation<String>> map = new HashMap<>();
 
@@ -21,11 +22,17 @@ public class RuleBasedOperation implements IRuleBasedOperation {
         ruleOperationsMap = Collections.unmodifiableMap(map);
     }
 
+    // Register new rules and their operations here.
+    // You may create a concrete implementation of the Operation here.
+    // However, it is recommended to create a concrete implementation in their own java file for clarity
+    // Whitelist your rules in the application.properties file via the "rules.whitelist" property to use it
+    // in the app or else the validation will not accept the new rules
     private static void populateRules(Map<Integer, Operation<String>> map) {
         map.put(REVERSE_STRING_KEY, new ReverseStringOperation());
         map.put(HASH_STRING_KEY, new MD5HashedStringOperation());
     }
 
+    @Override
     public String processRuleBasedOperation(String rules, String message) {
         char DIGIT_OFFSET_CHAR = '0';
         String processedMessage = message;

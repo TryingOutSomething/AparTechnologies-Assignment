@@ -28,11 +28,22 @@ public class ReplyControllerV2 {
     @Autowired
     private IRuleBasedOperation ruleBasedOperation;
 
+    /**
+     * Informs the user that the message is empty
+     *
+     * @return the response entity
+     */
     @GetMapping("/reply")
     public ResponseEntity<ReplyMessage> replying() {
         return new ResponseEntity<>(new ReplyMessage("Message is empty"), HttpStatus.BAD_REQUEST);
     }
 
+    /**
+     * Validates and processes the user provided message
+     *
+     * @param message the message
+     * @return the response entity
+     */
     @GetMapping("/reply/{message}")
     public ResponseEntity<ReplyMessage> replying(@PathVariable String message) {
         String reply;

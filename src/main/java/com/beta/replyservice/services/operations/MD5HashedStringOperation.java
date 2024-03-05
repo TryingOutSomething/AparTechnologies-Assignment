@@ -5,10 +5,18 @@ import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
+/**
+ * The concrete implementation of the Operation interface.
+ */
 class MD5HashedStringOperation implements Operation<String> {
 
     private static final String ALGO = "MD5";
 
+    /**
+     * Performs a MD5 hash to the user provided message
+     *
+     * @param value the message to hash
+     */
     @Override
     public String execute(String value) {
         if (value == null) {
