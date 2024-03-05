@@ -1,6 +1,6 @@
 package com.beta.replyservice.services.validation;
 
-import com.beta.replyservice.configuration.MessageConfiguration;
+import com.beta.replyservice.configuration.RuleConfiguration;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -8,24 +8,31 @@ import org.springframework.stereotype.Service;
 public class RequestPayloadValidator implements Validator {
 
     @Autowired
-    private MessageConfiguration config;
+    private RuleConfiguration config;
 
     @Override
-    public boolean isValidInput(String input) {
+    public ValidationResult isValidInput(String input) {
         if (input == null) {
-            return false;
+            return new ValidationResult("", false);
         }
 
         int ruleMessageSeparatorIndex = input.indexOf(config.getSeparator());
 
         if (ruleMessageSeparatorIndex == -1) {
-            return false;
+            return new ValidationResult("", false);
         }
 
         String rules = input.substring(0, ruleMessageSeparatorIndex);
 
-        return isValidRule(rules)
-                && hasMessage(input, ruleMessageSeparatorIndex);
+        if (!isValidRule(rules)) {
+            return new ValidationResult("", false);
+        }
+
+        if (!hasMessage(input, ruleMessageSeparatorIndex)) {
+            return new ValidationResult("", false);
+        }
+
+        return new ValidationResult(null, true);
     }
 
     private boolean isValidRule(String input) {

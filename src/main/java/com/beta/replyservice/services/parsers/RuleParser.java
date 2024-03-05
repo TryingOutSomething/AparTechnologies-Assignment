@@ -1,6 +1,6 @@
 package com.beta.replyservice.services.parsers;
 
-import com.beta.replyservice.configuration.MessageConfiguration;
+import com.beta.replyservice.configuration.RuleConfiguration;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 public class RuleParser implements Parser<String, String> {
 
     @Autowired
-    private MessageConfiguration config;
+    private RuleConfiguration config;
 
     @Override
     public String getValue(String input) {

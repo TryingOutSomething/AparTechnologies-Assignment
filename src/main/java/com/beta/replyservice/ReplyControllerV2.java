@@ -2,6 +2,7 @@ package com.beta.replyservice;
 
 import com.beta.replyservice.services.operations.IRuleBasedOperation;
 import com.beta.replyservice.services.parsers.Parser;
+import com.beta.replyservice.services.validation.ValidationResult;
 import com.beta.replyservice.services.validation.Validator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -37,8 +38,10 @@ public class ReplyControllerV2 {
         String reply;
         HttpStatus status;
 
-        if (!validator.isValidInput(message)) {
-            reply = "Invalid input";
+        final ValidationResult result = validator.isValidInput(message);
+
+        if (!result.isValid()) {
+            reply = result.getErrorMessage();
             status = HttpStatus.NOT_FOUND;
         } else {
             String rules = ruleParser.getValue(message);

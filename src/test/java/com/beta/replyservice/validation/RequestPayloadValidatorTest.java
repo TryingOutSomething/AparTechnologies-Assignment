@@ -17,7 +17,7 @@ public class RequestPayloadValidatorTest {
         String input = "1-skdaskdmskdm";
 
         boolean expectedResult = true;
-        boolean actualResult = validator.isValidInput(input);
+        boolean actualResult = validator.isValidInput(input).isValid();
 
         Assertions.assertEquals(expectedResult, actualResult);
     }
@@ -27,7 +27,7 @@ public class RequestPayloadValidatorTest {
         String input = "a-skdaskdmskdm";
 
         boolean expectedResult = false;
-        boolean actualResult = validator.isValidInput(input);
+        boolean actualResult = validator.isValidInput(input).isValid();
 
         Assertions.assertEquals(expectedResult, actualResult);
     }
@@ -37,7 +37,7 @@ public class RequestPayloadValidatorTest {
         String input = "1-";
 
         boolean expectedResult = false;
-        boolean actualResult = validator.isValidInput(input);
+        boolean actualResult = validator.isValidInput(input).isValid();
 
         Assertions.assertEquals(expectedResult, actualResult);
     }
@@ -47,7 +47,7 @@ public class RequestPayloadValidatorTest {
         String input = "";
 
         boolean expectedResult = false;
-        boolean actualResult = validator.isValidInput(input);
+        boolean actualResult = validator.isValidInput(input).isValid();
 
         Assertions.assertEquals(expectedResult, actualResult);
     }
@@ -57,7 +57,7 @@ public class RequestPayloadValidatorTest {
         String input = "";
 
         boolean expectedResult = false;
-        boolean actualResult = validator.isValidInput(input);
+        boolean actualResult = validator.isValidInput(input).isValid();
 
         Assertions.assertEquals(expectedResult, actualResult);
     }

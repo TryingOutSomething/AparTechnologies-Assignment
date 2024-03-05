@@ -9,14 +9,14 @@ import org.springframework.boot.test.context.SpringBootTest;
 import java.util.Set;
 
 @SpringBootTest
-public class MessageConfigurationTest {
+public class RuleConfigurationTest {
 
     @Value("${rule.separator}")
     private String messageSeparatorProperty;
     @Value("${rule.whitelist}")
     private int[] ruleWhitelistProperty;
     @Autowired
-    private MessageConfiguration config;
+    private RuleConfiguration config;
 
     @Test
     public void testGetRulesMessageSeparatorProperty() {

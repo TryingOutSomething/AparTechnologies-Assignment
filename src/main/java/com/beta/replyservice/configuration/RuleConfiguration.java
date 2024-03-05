@@ -1,19 +1,15 @@
 package com.beta.replyservice.configuration;
 
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import java.util.Arrays;
-import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
 @Configuration
 @ConfigurationProperties(prefix = "rule")
-public class MessageConfiguration {
+public class RuleConfiguration {
 
     private String separator;
     private int minLength;
