@@ -1,104 +1,62 @@
-# Your Task
-Our company has released a beta version of **String Reply Service** and it has been a huge success.
-In the current implementation (as part of boilerplate code), the **String Reply Service** takes in an input string (in the format of `[a-z0-9]*`)
-and returns the input in a JSON object.
+# AparTechnologies-Assignment
 
-For example,
+Below are the details of my submission for the assignment, outlining the enhancements and additions made to the provided
+boilerplate code to meet the requirements for Version 2 (V2) of the **String Reply Service**.
 
-```
-GET /reply/kbzw9ru
-{
-    "data": "kbzw9ru"
-}
-```
+For reference, you can find the original assignment information [here](Assignment).
 
-As the service is widely adopted, there have been increasing feature requests.
-Our project manager has come back with the following requirements for V2 of the service:
+## Added Implementation Details
 
-The input string will now be comprised of two components, a rule and a string, separated by a dash (-).
-Rules **always** contain two numbers. Each number represents a string operation.
+In completing the assignment, I have extended the provided boilerplate code to meet the requirements for Version 2 (V2)
+of the **String Reply Service**. Here's a breakdown of the enhancements and additions:
 
-The supported numbers are:
+### New Endpoint for V2
 
-- `1`: reverse the string
+I implemented a new endpoint `/v2/reply/{rule}-{string}` to accommodate the updated requirements for Version 2 of the
+service. This endpoint accepts a rule and a string separated by a dash (-), where the rule specifies the operations to
+be performed on the string.
 
-   E.g. `kbzw9ru` becomes `ur9wzbk`
+#### Rule and String Validation
 
-- `2`: encode the string via MD5 hash algorithm and display as hex
+The endpoint ensures that the provided rule adheres to the specified format, which consists of two numbers representing
+the string operations. Additionally, the input string is validated to ensure it meets the expected criteria.
 
-   E.g. `kbzw9ru` becomes `0fafeaae780954464c1b29f765861fad`
+Any invalid rule or input string results in a proper error response with status code `400` and
+message `"Invalid input"`. Furthermore, the response includes additional information to assist users in identifying
+their mistake, providing more context on the specific error encountered.
 
-The numbers are applied in sequence, i.e. the output of the first rule will
-serve as the input of the second rule. The numbers can also be repeated,
-i.e. a rule of 11 would mean reversing the string twice, resulting in no change to the string.
+### Rule-Based String Operations
 
-Giving a few examples,
+I developed a mechanism to handle the specified string operations based on the provided rules. The supported operations
+are:
 
-```
-GET /v2/reply/11-kbzw9ru
-{
-    "data": "kbzw9ru"
-}
-```
-```
-GET /v2/reply/12-kbzw9ru
-{
-    "data": "5a8973b3b1fafaeaadf10e195c6e1dd4"
-}
-```
-```
-GET /v2/reply/22-kbzw9ru
-{
-    "data": "e8501e64cf0a9fa45e3c25aa9e77ffd5"
-}
-```
+- **Rule 1**: Reverse the string.
+- **Rule 2**: Encode the string using the MD5 hash algorithm and represent it as a hexadecimal string.
 
-## What you need to do
-Use the boilerplate given and implement the above requirement.
-Your implementation should also consider:
+The rules are applied sequentially, and each operation modifies the input string according to its definition. This
+implementation allows for flexibility in accommodating potential future rule additions.
 
-- Maintain the existing endpoint for backward compatibility.
-- Implement V2 endpoint for the above new requirements.
-- Additional rules are expected in future releases. The updates in rule set
-should have minimal code changes and impact to existing functionality.
-- Testability for individual rule and the application.
-Unit tests are highly recommended.
-- Endpoints should return correct status code and response message.
-For invalid request, it should return status code `400`
-with message `"Invalid input"`, for example:
-   ```
-   GET /v2/reply/13-kbzw9ru
-   {
-       "message": "Invalid input"
-   }
-   ```
+To add new rules, follow these steps:
 
-Upon completing the task, please feel free to (though not required):
+1. Navigate to the `populateRules()` method within the `RuleBasedOperation` class in the codebase.
 
-- host your code on Github
-- include any readme to explain your setup/environment
-- add/implement anything you think would be beneficial
+2. Inside the `populateRules()` method, add the implementation for the new rule. Ensure that the rule is defined
+   following the required format, including the string operations to be performed.
 
-## Build project
+3. After implementing the new rule, whitelist it to allow the service to recognize and execute it. Open
+   the `application.properties` file and append the new rule to the `rule.whitelist` property. Ensure that the rule is
+   correctly formatted and added to the whitelist.
 
-To build the project, simply run
-```
-./gradlew build
-```
+By following these steps, you can seamlessly incorporate new rules into the service, enhancing its functionality while
+maintaining compatibility and reliability.
 
-## Start project
+### Backward Compatibility
 
-To start the project, simply run
-```
-./gradlew bootRun
-```
+To maintain backward compatibility, I retained the existing endpoint `/reply/{string}`. This endpoint continues to
+function as before, returning the input string in a JSON object.
 
-Once the service started, the endpoint will be available at `localhost:8080`, so you can make request to the service endpoint
+### Testability and Unit Tests
 
-```json
-GET localhost:8080/reply/helloworld
-
-{
-    message: "helloword"
-}
-```
+I implemented unit tests to ensure the correctness and reliability of the service, particularly focusing on individual
+rule implementations and endpoint functionalities. This ensures that each component of the service behaves as expected
+and facilitates easier debugging and maintenance.
