@@ -61,6 +61,8 @@ I implemented unit tests to ensure the correctness and reliability of the servic
 rule implementations and endpoint functionalities. This ensures that each component of the service behaves as expected
 and facilitates easier debugging and maintenance.
 
+[Github link to the project](https://github.com/TryingOutSomething/AparTechnologies-Assignment/)
+
 ## Build and Run the Project
 
 To build the project, simply run the following command in your terminal:
