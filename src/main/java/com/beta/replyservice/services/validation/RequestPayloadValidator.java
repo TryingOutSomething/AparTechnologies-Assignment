@@ -17,35 +17,35 @@ public class RequestPayloadValidator implements Validator {
     @Override
     public ValidationResult isValidInput(String input) {
         if (input == null) {
-            return new ValidationResult(errorMessage.getNullInput(), false);
+            return generateResult(false, errorMessage.getNullInput(), true);
         }
 
         int ruleMessageSeparatorIndex = input.indexOf(config.getSeparator());
 
         if (ruleMessageSeparatorIndex == -1) {
-            return new ValidationResult(errorMessage.getNoSeparator(), false);
+            return generateResult(false, errorMessage.getNoSeparator(), true);
         }
 
         String rules = input.substring(0, ruleMessageSeparatorIndex);
         ValidationResult rulesValidationResult = isValidRule(rules);
 
         if (!rulesValidationResult.isValid()) {
-            String message = errorMessage.getInvalidRule() + ": " + rulesValidationResult.getErrorMessage();
-            return new ValidationResult(message, false);
+            String message = errorMessage.getInvalidRule() + rulesValidationResult.getErrorMessage();
+            return generateResult(false, message, true);
         }
 
         if (!hasMessage(input, ruleMessageSeparatorIndex)) {
-            return new ValidationResult(errorMessage.getEmptyMessage(), false);
+            return generateResult(false, errorMessage.getEmptyMessage(), true);
         }
 
-        return new ValidationResult(null, true);
+        return generateResult(true, null, false);
     }
 
     private ValidationResult isValidRule(String input) {
         int inputLength = input.length();
 
         if (inputLength < config.getMinLength()) {
-            return new ValidationResult(errorMessage.getInvalidRuleLength(), false);
+            return generateResult(false, errorMessage.getInvalidRuleLength(), false);
         }
 
         char CHAR_DIGIT_OFFSET = '0';
@@ -65,10 +65,10 @@ public class RequestPayloadValidator implements Validator {
                     ? errorMessage.getRuleNotNumeric()
                     : errorMessage.getRuleNotWhitelisted() + " For " + rule;
 
-            return new ValidationResult(message, false);
+            return generateResult(false, message, false);
         }
 
-        return new ValidationResult(null, true);
+        return generateResult(true, null, false);
     }
 
     private boolean isNumeric(int rule) {
@@ -81,5 +81,16 @@ public class RequestPayloadValidator implements Validator {
 
     private boolean hasMessage(String input, int separatorIndex) {
         return separatorIndex < input.length() - 1;
+    }
+
+    private ValidationResult generateResult(boolean isValid, String message, boolean requiresPrefix) {
+        if (isValid) {
+            return new ValidationResult(null, true);
+        }
+
+        String prefixMessage = requiresPrefix
+                ? errorMessage.getPrefix() + " " : "";
+
+        return  new ValidationResult(prefixMessage + message, false);
     }
 }

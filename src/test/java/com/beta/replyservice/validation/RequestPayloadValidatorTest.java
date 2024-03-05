@@ -38,7 +38,9 @@ public class RequestPayloadValidatorTest {
 
         Assertions.assertEquals(expectedResult, actualValidationResult);
 
-        String expectedErrorMessage = requestErrorMessage.getInvalidRule() + ": " + requestErrorMessage.getRuleNotNumeric();
+        String expectedErrorMessage = requestErrorMessage.getPrefix() + " " +
+                requestErrorMessage.getInvalidRule() +
+                requestErrorMessage.getRuleNotNumeric();
         Assertions.assertEquals(expectedErrorMessage, result.getErrorMessage());
     }
 
@@ -53,10 +55,12 @@ public class RequestPayloadValidatorTest {
 
         Assertions.assertEquals(expectedResult, actualValidationResult);
 
-        String expectedErrorMessage = requestErrorMessage.getInvalidRule() + ": " + requestErrorMessage.getRuleNotWhitelisted() + " For 5";
+        String expectedErrorMessage = requestErrorMessage.getPrefix() + " " +
+                requestErrorMessage.getInvalidRule() +
+                requestErrorMessage.getRuleNotWhitelisted() + " For 5";
         Assertions.assertEquals(expectedErrorMessage, result.getErrorMessage());
-
     }
+
     @Test
     public void testIsInvalidMessageInput() {
         String input = "1-";

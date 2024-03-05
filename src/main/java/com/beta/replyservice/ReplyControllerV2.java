@@ -30,7 +30,7 @@ public class ReplyControllerV2 {
 
     @GetMapping("/reply")
     public ResponseEntity<ReplyMessage> replying() {
-        return new ResponseEntity<>(new ReplyMessage("Message is empty"), HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(new ReplyMessage("Message is empty"), HttpStatus.BAD_REQUEST);
     }
 
     @GetMapping("/reply/{message}")
@@ -42,7 +42,7 @@ public class ReplyControllerV2 {
 
         if (!result.isValid()) {
             reply = result.getErrorMessage();
-            status = HttpStatus.NOT_FOUND;
+            status = HttpStatus.BAD_REQUEST;
         } else {
             String rules = ruleParser.getValue(message);
             String userMessage = messageParser.getValue(message);
