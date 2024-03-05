@@ -60,3 +60,22 @@ function as before, returning the input string in a JSON object.
 I implemented unit tests to ensure the correctness and reliability of the service, particularly focusing on individual
 rule implementations and endpoint functionalities. This ensures that each component of the service behaves as expected
 and facilitates easier debugging and maintenance.
+
+## Build and Run the Project
+
+To build the project, simply run the following command in your terminal:
+
+```bash
+./gradlew build
+```
+
+This command will compile the source code, run tests, and package the application.
+
+Once the build is successful, you can start the project by executing:
+
+```bash
+./gradlew bootRun
+```
+
+This command will start the application. Once the service is up and running, you can access the endpoints at localhost:
+8080 to make requests to the service.
