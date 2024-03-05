@@ -1,5 +1,6 @@
 package com.beta.replyservice.services.validation;
 
+import com.beta.replyservice.configuration.RequestErrorMessage;
 import com.beta.replyservice.configuration.RuleConfiguration;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -10,36 +11,41 @@ public class RequestPayloadValidator implements Validator {
     @Autowired
     private RuleConfiguration config;
 
+    @Autowired
+    private RequestErrorMessage errorMessage;
+
     @Override
     public ValidationResult isValidInput(String input) {
         if (input == null) {
-            return new ValidationResult("", false);
+            return new ValidationResult(errorMessage.getNullInput(), false);
         }
 
         int ruleMessageSeparatorIndex = input.indexOf(config.getSeparator());
 
         if (ruleMessageSeparatorIndex == -1) {
-            return new ValidationResult("", false);
+            return new ValidationResult(errorMessage.getNoSeparator(), false);
         }
 
         String rules = input.substring(0, ruleMessageSeparatorIndex);
+        ValidationResult rulesValidationResult = isValidRule(rules);
 
-        if (!isValidRule(rules)) {
-            return new ValidationResult("", false);
+        if (!rulesValidationResult.isValid()) {
+            String message = errorMessage.getInvalidRule() + ": " + rulesValidationResult.getErrorMessage();
+            return new ValidationResult(message, false);
         }
 
         if (!hasMessage(input, ruleMessageSeparatorIndex)) {
-            return new ValidationResult("", false);
+            return new ValidationResult(errorMessage.getEmptyMessage(), false);
         }
 
         return new ValidationResult(null, true);
     }
 
-    private boolean isValidRule(String input) {
+    private ValidationResult isValidRule(String input) {
         int inputLength = input.length();
 
         if (inputLength < config.getMinLength()) {
-            return false;
+            return new ValidationResult(errorMessage.getInvalidRuleLength(), false);
         }
 
         char CHAR_DIGIT_OFFSET = '0';
@@ -48,21 +54,28 @@ public class RequestPayloadValidator implements Validator {
             char currentChar = input.charAt(i);
             int rule = currentChar - CHAR_DIGIT_OFFSET;
 
-            if (isNumeric(rule) && isValidRule(rule)) {
+            boolean isNumeric = isNumeric(rule);
+            boolean isWhiteListed = ruleIsWhiteListed(rule);
+
+            if (isNumeric && isWhiteListed) {
                 continue;
             }
 
-            return false;
+            String message = !isNumeric
+                    ? errorMessage.getRuleNotNumeric()
+                    : errorMessage.getRuleNotWhitelisted() + " For " + rule;
+
+            return new ValidationResult(message, false);
         }
 
-        return true;
+        return new ValidationResult(null, true);
     }
 
     private boolean isNumeric(int rule) {
         return rule >= 1 && rule <= 9;
     }
 
-    private boolean isValidRule(int rule) {
+    private boolean ruleIsWhiteListed(int rule) {
         return config.getWhitelist().contains(rule);
     }
 
