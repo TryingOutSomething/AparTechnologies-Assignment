@@ -31,7 +31,7 @@ public class RequestPayloadValidator implements Validator {
     private boolean isValidRule(String input) {
         int inputLength = input.length();
 
-        if (inputLength == 0) {
+        if (inputLength < config.getMinLength()) {
             return false;
         }
 

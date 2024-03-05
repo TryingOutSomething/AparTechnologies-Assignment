@@ -10,6 +10,7 @@ import org.springframework.context.annotation.Configuration;
 public class MessageConfiguration {
 
     private String separator;
+    private int minLength;
     private int[] range;
 
     public String getSeparator() {
@@ -18,6 +19,14 @@ public class MessageConfiguration {
 
     public void setSeparator(String separator) {
         this.separator = separator;
+    }
+
+    public int getMinLength() {
+        return minLength;
+    }
+
+    public void setMinLength(int minLength) {
+        this.minLength = minLength;
     }
 
     public int[] getRange() {
