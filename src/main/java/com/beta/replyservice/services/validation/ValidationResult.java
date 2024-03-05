@@ -1,6 +1,12 @@
 package com.beta.replyservice.services.validation;
 
+import com.beta.replyservice.configuration.RequestErrorMessage;
+import org.springframework.beans.factory.annotation.Autowired;
+
 public class ValidationResult {
+
+    @Autowired
+    private RequestErrorMessage requestErrorMessage;
 
     private final String errorMessage;
     private final boolean valid;
@@ -11,7 +17,7 @@ public class ValidationResult {
     }
 
     public String getErrorMessage() {
-        return errorMessage;
+        return requestErrorMessage.getPrefix() + ". Reason: " + errorMessage;
     }
 
     public boolean isValid() {

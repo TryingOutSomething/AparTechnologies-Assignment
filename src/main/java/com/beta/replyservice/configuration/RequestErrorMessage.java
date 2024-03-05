@@ -9,6 +9,7 @@ import org.springframework.context.annotation.PropertySource;
 @PropertySource("classpath:message.properties")
 public class RequestErrorMessage {
 
+    private String prefix;
     private String invalidRule;
     private String invalidRuleLength;
     private String emptyMessage;
@@ -16,6 +17,14 @@ public class RequestErrorMessage {
     private String noSeparator;
     private String ruleNotWhitelisted;
     private String ruleNotNumeric;
+
+    public String getPrefix() {
+        return prefix;
+    }
+
+    void setPrefix(String prefix) {
+        this.prefix = prefix;
+    }
 
     public String getInvalidRule() {
         return invalidRule;
