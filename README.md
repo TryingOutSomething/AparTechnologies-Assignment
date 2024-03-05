@@ -3,7 +3,7 @@
 Below are the details of my submission for the assignment, outlining the enhancements and additions made to the provided
 boilerplate code to meet the requirements for Version 2 (V2) of the **String Reply Service**.
 
-For reference, you can find the original assignment information [here](Assignment).
+For reference, you can find the original assignment information [here](Assignment.md).
 
 ## Added Implementation Details
 
